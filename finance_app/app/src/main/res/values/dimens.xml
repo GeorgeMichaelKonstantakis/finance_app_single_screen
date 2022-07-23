@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="screen_title_text">@dimen/_18sdp</dimen>
+    <dimen name="screen_subtitle_text">@dimen/_14sdp</dimen>
+    <dimen name="upper_card_title_text">@dimen/_15sdp</dimen>
+    <dimen name="lower_card_title_text">@dimen/_16sdp</dimen>
+    <dimen name="simulation_text">@dimen/_13sdp</dimen>
+    <dimen name="update_button_text">@dimen/_17sdp</dimen>
+    <dimen name="description_text">@dimen/_18sdp</dimen>
+</resources>

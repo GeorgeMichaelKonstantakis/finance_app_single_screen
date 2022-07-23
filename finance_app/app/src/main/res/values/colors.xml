@@ -7,4 +7,20 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimaryDark">#1b1b1b</color>
+    <color name="colorOuterLayerBackground">#2c2c2c</color>
+    <color name="colorInnerLayerBackground">#373737</color>
+    <color name="colorOuterLayerSecondaryBackground">#151515</color>
+
+    <color name="colorBasicText">#fcfcfc</color>
+    <color name="colorSecondaryText">#6f6f6f</color>
+    
+    <color name="colorButtonOrange">#fd7204</color>
+    <color name="colorNormalTextOrange">#f4700b</color>
+    <color name="colorLargeTextOrange">#fd7203</color>
+
+    <color name="colorSimulationSuccess">#0ed772</color>
+    <color name="colorSimulationRisk">#f8a623</color>
+
 </resources>
