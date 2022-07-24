@@ -12,12 +12,7 @@
     <string name="simulation_text">Simulation Results for</string>
     <string name="one_year_text">1 Year</string>
     <string name="update_button_text">Update</string>
-    <string name="description_text">
-        The weighting algorithm is basedon the stocks\' long term average true range relative to their current price and to their Portofolio\'s VaR. \n
-        The weights are subject to price fluctuationand would devate. \n
-        The portfolio will be rebalanced at ZuluTrade's discretion, based on market conditions. \n
-        Past performance is not indicative of future one.
-    </string>
+    <string name="description_text">The weighting algorithm is based on the stocks\' long term average true range relative to their current price and to their Portfolio\'s VaR. \nThe weights are subject to price fluctuation and would deviate. \nThe portfolio will be rebalanced at ZuluTrade\'s discretion, based on market conditions. \nPast performance is not indicative of future one.</string>
     <string name="card_1_title">ROI</string>
     <string name="card_2_title">Net PnL</string>
     <string name="card_3_title">Risk</string>
