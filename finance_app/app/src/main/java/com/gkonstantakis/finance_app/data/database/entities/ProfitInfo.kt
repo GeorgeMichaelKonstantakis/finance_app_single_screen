@@ -11,5 +11,5 @@ data class ProfitInfo(
     var id: Int = 0,
 
     @ColumnInfo(name = "profit")
-    var profit: Double = 0.0,
+    var profit: Int = 0,
 )
