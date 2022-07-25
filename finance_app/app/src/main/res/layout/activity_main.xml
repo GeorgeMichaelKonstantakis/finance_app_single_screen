@@ -189,13 +189,23 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/calculations_title">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/basket_edit_text"
                             android:layout_width="@dimen/_60sdp"
+                            android:layout_weight="1"
+                            android:focusableInTouchMode="true"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:gravity="center"
+                            android:textColor="@color/colorBasicText"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:ellipsize="end"
                             android:layout_height="@dimen/_35sdp"
                             android:background="@drawable/basket_edit_text_background"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:theme="@style/AppTheme.EditText"/>
 
                         <TextView
                             android:id="@+id/basket_step"
@@ -364,14 +374,24 @@
                     app:layout_constraintStart_toEndOf="@id/info_icon_2"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/profit_edit_text"
                     android:layout_width="@dimen/_140sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:focusableInTouchMode="true"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:ellipsize="end"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBasicText"
                     android:background="@drawable/basket_edit_text_background"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:theme="@style/AppTheme.EditText"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

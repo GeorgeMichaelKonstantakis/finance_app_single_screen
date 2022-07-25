@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
 
-    suspend fun getProfit(): Flow<DataState<ProfitInfoDomain>>
+    suspend fun getProfit(): Flow<DataState<List<ProfitInfoDomain>>>
 
-    suspend fun getFinance(): Flow<DataState<FinanceInfoDomain>>
+    suspend fun getFinance(): Flow<DataState<List<FinanceInfoDomain>>>
 
-    suspend fun updateProfit(profitInfoDomain: ProfitInfoDomain): Flow<DataState<ProfitInfoDomain>>
+    suspend fun updateProfit(profitInfoDomain: ProfitInfoDomain)
 
-    suspend fun updateFinance(financeInfoDomain: FinanceInfoDomain): Flow<DataState<FinanceInfoDomain>>
+    suspend fun updateFinance(financeInfoDomain: FinanceInfoDomain)
 }

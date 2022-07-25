@@ -9,51 +9,59 @@ import com.gkonstantakis.finance_app.data.MainRepositoryImpl
 import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
 import com.gkonstantakis.finance_app.ui.utils.MainStateEventParameters
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val mainRepository: MainRepositoryImpl
 ) : ViewModel() {
 
-    private var _profitDataState: MutableLiveData<DataState<ProfitInfoDomain>> = MutableLiveData()
-    val profitDataState: LiveData<DataState<ProfitInfoDomain>>
+    private var _profitDataState: MutableLiveData<DataState<List<ProfitInfoDomain>>> = MutableLiveData()
+    val profitDataState: LiveData<DataState<List<ProfitInfoDomain>>>
         get() = _profitDataState
 
-    private var _financeDataState: MutableLiveData<DataState<FinanceInfoDomain>> = MutableLiveData()
-    val financeDataState: LiveData<DataState<FinanceInfoDomain>>
+    private var _financeDataState: MutableLiveData<DataState<List<FinanceInfoDomain>>> = MutableLiveData()
+    val financeDataState: LiveData<DataState<List<FinanceInfoDomain>>>
         get() = _financeDataState
 
     fun setDataStateEvent(
         mainStateEvent: MainStateEvent,
-        mainStateEventParameters: MainStateEventParameters
+        mainStateEventParameters: MainStateEventParameters?
     ) {
         viewModelScope.launch {
             when (mainStateEvent) {
                 is MainStateEvent.GetNewBasketValues -> {
-                    mainRepository.getFinance().apply {
-                        _financeDataState.value = this.first()
+                    mainRepository.getFinance().onEach {
+                        _financeDataState.value = it
                     }.launchIn(viewModelScope)
                 }
                 is MainStateEvent.GetNewMakeProfitValue -> {
-                    mainRepository.getProfit().apply {
-                        _profitDataState.value = this.first()
+                    mainRepository.getProfit().onEach {
+                        _profitDataState.value = it
                     }.launchIn(viewModelScope)
                 }
                 is MainStateEvent.SetNewMakeProfitValue -> {
-                    val newProfit = ProfitInfoDomain(
-                        id = 0,
-                        profit = mainStateEventParameters.profit
-                    )
-                    mainRepository.updateProfit(newProfit)
+                    val newProfit = mainStateEventParameters?.let {
+                        ProfitInfoDomain(
+                            id = 0,
+                            profit = it.profit
+                        )
+                    }
+                    async {
+                        mainRepository.updateProfit(newProfit!!)
+                    }
                 }
                 is MainStateEvent.SetNewBasketValues -> {
-                    val newFinance = FinanceInfoDomain(
-                        id = 0,
-                        baskets = mainStateEventParameters.baskets
-                    )
-                    mainRepository.updateFinance(newFinance)
+                    val newFinance = mainStateEventParameters?.let {
+                        FinanceInfoDomain(
+                            id = 0,
+                            baskets = it.baskets
+                        )
+                    }
+                    async {
+                        mainRepository.updateFinance(newFinance!!)
+                    }
                 }
             }
         }

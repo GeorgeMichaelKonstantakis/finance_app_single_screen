@@ -8,4 +8,9 @@
 <!--        <item name="colorAccent">@color/colorAccent</item>-->
 <!--        <item name="android:windowFullscreen">true</item>-->
     </style>
+
+    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/colorBasicText</item>
+        <item name="colorControlNormal">@color/colorBasicText</item>
+    </style>
 </resources>
