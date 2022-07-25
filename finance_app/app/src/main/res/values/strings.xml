@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Finance App</string>
+
+    <string name="invest_in_baskets_text">Invest in Baskets</string>
+    <string name="title_text">Big Tech</string>
+    <string name="subtitle_text">Invested: €2,895 (1 x €2,895)</string>
+    <string name="add_more_baskets_text">Add more Baskets</string>
+    <string name="basket_text_step">x €2,917</string>
+    <string name="basket_value_text">€0</string>
+    <string name="account_total_text">From €25,378</string>
+    <string name="take_profit_text">Take Profit</string>
+    <string name="simulation_text">Simulation Results for</string>
+    <string name="one_year_text">1 Year</string>
+    <string name="update_button_text">Update</string>
+    <string name="description_text">The weighting algorithm is based on the stocks\' long term average true range relative to their current price and to their Portfolio\'s VaR. \nThe weights are subject to price fluctuation and would deviate. \nThe portfolio will be rebalanced at ZuluTrade\'s discretion, based on market conditions. \nPast performance is not indicative of future one.</string>
+    <string name="card_1_title">ROI</string>
+    <string name="card_2_title">Net PnL</string>
+    <string name="card_3_title">Risk</string>
+    <string name="card_1_value">102.9%</string>
+    <string name="card_2_value">€2,979</string>
+    <string name="card_3_value">2</string>
+
+    <string name="error_toast_basket_text">You can not set negative value for baskets.</string>
 </resources>
