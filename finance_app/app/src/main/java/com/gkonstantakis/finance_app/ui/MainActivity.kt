@@ -4,17 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.gkonstantakis.finance_app.FinanceApplication
 import com.gkonstantakis.finance_app.data.DataState
 import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
 import com.gkonstantakis.finance_app.databinding.ActivityMainBinding
+import com.gkonstantakis.finance_app.ui.utils.Constant.Companion.basketStepValue
+import com.gkonstantakis.finance_app.ui.utils.Constant.Companion.totalAvailableAmount
 import com.gkonstantakis.finance_app.ui.utils.MainStateEventParameters
 import com.gkonstantakis.finance_app.ui.view_models.MainStateEvent
 import com.gkonstantakis.finance_app.ui.view_models.MainViewModel
@@ -35,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var basketAdditionButton: Button
     private lateinit var makeProfitEditText: TextInputEditText
 
+    private var totalBaskets: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -49,28 +50,17 @@ class MainActivity : AppCompatActivity() {
 
         subscribeObservers()
 
-        viewModel.setDataStateEvent(MainStateEvent.GetNewBasketValues,null)
+        basketTextWatcher()
 
-        basketEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+        makeProfitTextWatcher()
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+        initBasketValue()
 
-            override fun afterTextChanged(p0: Editable?) {
-                val inputText = p0.toString()
-                Log.e("MainActivity","basketEditText: "+inputText.toInt())
-                viewModel.setDataStateEvent(
-                    MainStateEvent.SetNewBasketValues,
-                    MainStateEventParameters(
-                        inputText.toInt(),
-                        0
-                    )
-                )
-            }
+        initMakeProfitValue()
 
-        })
+        setSubtractButton()
+
+        setAdditionButton()
     }
 
     private fun initUIElems(binding: ActivityMainBinding) {
@@ -84,12 +74,33 @@ class MainActivity : AppCompatActivity() {
         makeProfitEditText = binding.profitEditText
     }
 
+    fun initBasketValue() {
+        viewModel.setDataStateEvent(MainStateEvent.GetNewBasketValues,null)
+    }
+
+    fun initMakeProfitValue() {
+        viewModel.setDataStateEvent(MainStateEvent.GetNewMakeProfitValue,null)
+    }
+
+    fun setSubtractButton() {
+        basketSubtractButton.setOnClickListener {
+            basketEditText.setText("${totalBaskets - 1}",TextView.BufferType.EDITABLE)
+        }
+    }
+
+    fun setAdditionButton() {
+        basketAdditionButton.setOnClickListener {
+            basketEditText.setText("${totalBaskets + 1}",TextView.BufferType.EDITABLE)
+        }
+    }
+
     private fun subscribeObservers() {
         viewModel.financeDataState.observe(this, Observer { datastate ->
             when (datastate) {
                 is DataState.SuccessGetFinance<List<FinanceInfoDomain>> -> {
                     val baskets = datastate.data[0].baskets
                     basketEditText.setText(baskets.toString(),TextView.BufferType.EDITABLE)
+                    updateBasketProgressBar (baskets)
                 }
             }
         })
@@ -102,4 +113,80 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun updateBasketProgressBar (baskets: Int) {
+        val basketProgressValue = calculateNewAmount(baskets)
+        basketProgressBar.progress = basketProgressValue
+        basketProgressBarText.text = "${basketProgressValue}%"
+    }
+
+    private fun calculateNewAmount(baskets: Int): Int {
+      return (100*(baskets * basketStepValue)/totalAvailableAmount).toInt()
+    }
+
+    private fun validNewAmount(baskets: Int): Boolean {
+        val newAmount = baskets* basketStepValue
+        return newAmount <= totalAvailableAmount
+    }
+
+    private fun basketTextWatcher() {
+        basketEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                val inputText = p0.toString()
+                if (inputText.isNotEmpty()) {
+                    val baskets = inputText.toInt()
+                    if (baskets >= 0) {
+                        if(validNewAmount(baskets)) {
+                            totalBaskets = baskets
+                            updateBasketProgressBar(inputText.toInt())
+                            viewModel.setDataStateEvent(
+                                MainStateEvent.SetNewBasketValues,
+                                MainStateEventParameters(
+                                    inputText.toInt(),
+                                    0
+                                )
+                            )
+                        } else {
+                            basketEditText.setText(totalBaskets.toString(),TextView.BufferType.EDITABLE)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun makeProfitTextWatcher() {
+        makeProfitEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                val inputText = p0.toString()
+                if (inputText.isNotEmpty()) {
+                    val profit = inputText.toInt()
+                    if (profit >= 0) {
+                        viewModel.setDataStateEvent(
+                            MainStateEvent.SetNewMakeProfitValue,
+                            MainStateEventParameters(
+                                0,
+                                profit
+                            )
+                        )
+                    }
+                }
+            }
+
+        })
+    }
+
 }

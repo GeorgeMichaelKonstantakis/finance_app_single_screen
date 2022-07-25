@@ -19,4 +19,6 @@
     <string name="card_1_value">102.9%</string>
     <string name="card_2_value">€2,979</string>
     <string name="card_3_value">2</string>
+
+    <string name="error_toast_basket_text">You can not set negative value for baskets.</string>
 </resources>
