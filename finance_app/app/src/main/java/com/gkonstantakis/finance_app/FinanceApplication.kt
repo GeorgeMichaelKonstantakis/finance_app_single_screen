@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.gkonstantakis.finance_app.data.MainRepositoryImpl
 import com.gkonstantakis.finance_app.data.database.FinanceDao
 import com.gkonstantakis.finance_app.data.database.FinanceDatabase
-import com.gkonstantakis.finance_app.data.mapping.FinanceInfoMapper
+import com.gkonstantakis.finance_app.data.mapping.BasketsInfoMapper
 import com.gkonstantakis.finance_app.data.mapping.ProfitInfoMapper
 
 class FinanceApplication : Application() {
@@ -27,6 +27,6 @@ class FinanceApplication : Application() {
 
         financeDao = (financeDB as FinanceDatabase).financeDao()
 
-        mainRepository = MainRepositoryImpl(financeDao, FinanceInfoMapper(), ProfitInfoMapper())
+        mainRepository = MainRepositoryImpl(financeDao, BasketsInfoMapper(), ProfitInfoMapper())
     }
 }

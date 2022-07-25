@@ -1,10 +1,7 @@
 package com.gkonstantakis.finance_app.data.mapping
 
-import com.gkonstantakis.finance_app.data.database.entities.FinanceInfo
 import com.gkonstantakis.finance_app.data.database.entities.ProfitInfo
-import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
-import java.util.ArrayList
 
 class ProfitInfoMapper() {
 

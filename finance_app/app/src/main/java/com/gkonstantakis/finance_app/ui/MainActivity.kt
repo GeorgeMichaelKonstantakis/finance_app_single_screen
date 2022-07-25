@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.gkonstantakis.finance_app.FinanceApplication
 import com.gkonstantakis.finance_app.data.DataState
-import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
+import com.gkonstantakis.finance_app.data.models.BasketsInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
 import com.gkonstantakis.finance_app.databinding.ActivityMainBinding
 import com.gkonstantakis.finance_app.ui.utils.Constant.Companion.basketStepValue
@@ -79,25 +79,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initMakeProfitValue() {
-        viewModel.setDataStateEvent(MainStateEvent.GetNewMakeProfitValue,null)
+        viewModel.setDataStateEvent(MainStateEvent.GetNewMakeProfitValue, null)
     }
 
     fun setSubtractButton() {
         basketSubtractButton.setOnClickListener {
-            basketEditText.setText("${totalBaskets - 1}",TextView.BufferType.EDITABLE)
+            if (totalBaskets > 0) {
+                basketEditText.setText("${totalBaskets - 1}", TextView.BufferType.EDITABLE)
+            }
         }
     }
 
     fun setAdditionButton() {
         basketAdditionButton.setOnClickListener {
-            basketEditText.setText("${totalBaskets + 1}",TextView.BufferType.EDITABLE)
+            if (validNewAmount(totalBaskets)) {
+                basketEditText.setText("${totalBaskets + 1}", TextView.BufferType.EDITABLE)
+            }
         }
     }
 
     private fun subscribeObservers() {
         viewModel.financeDataState.observe(this, Observer { datastate ->
             when (datastate) {
-                is DataState.SuccessGetFinance<List<FinanceInfoDomain>> -> {
+                is DataState.SuccessGetFinance<List<BasketsInfoDomain>> -> {
                     val baskets = datastate.data[0].baskets
                     basketEditText.setText(baskets.toString(),TextView.BufferType.EDITABLE)
                     updateBasketProgressBar (baskets)

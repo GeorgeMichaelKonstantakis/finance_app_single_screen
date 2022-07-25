@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gkonstantakis.finance_app.data.DataState
 import com.gkonstantakis.finance_app.data.MainRepositoryImpl
-import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
+import com.gkonstantakis.finance_app.data.models.BasketsInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
 import com.gkonstantakis.finance_app.ui.utils.MainStateEventParameters
 import kotlinx.coroutines.async
@@ -21,8 +21,8 @@ class MainViewModel(
     val profitDataState: LiveData<DataState<List<ProfitInfoDomain>>>
         get() = _profitDataState
 
-    private var _financeDataState: MutableLiveData<DataState<List<FinanceInfoDomain>>> = MutableLiveData()
-    val financeDataState: LiveData<DataState<List<FinanceInfoDomain>>>
+    private var _financeDataState: MutableLiveData<DataState<List<BasketsInfoDomain>>> = MutableLiveData()
+    val financeDataState: LiveData<DataState<List<BasketsInfoDomain>>>
         get() = _financeDataState
 
     fun setDataStateEvent(
@@ -32,7 +32,7 @@ class MainViewModel(
         viewModelScope.launch {
             when (mainStateEvent) {
                 is MainStateEvent.GetNewBasketValues -> {
-                    mainRepository.getFinance().onEach {
+                    mainRepository.getBaskets().onEach {
                         _financeDataState.value = it
                     }.launchIn(viewModelScope)
                 }
@@ -53,14 +53,14 @@ class MainViewModel(
                     }
                 }
                 is MainStateEvent.SetNewBasketValues -> {
-                    val newFinance = mainStateEventParameters?.let {
-                        FinanceInfoDomain(
+                    val newBaskets = mainStateEventParameters?.let {
+                        BasketsInfoDomain(
                             id = 0,
                             baskets = it.baskets
                         )
                     }
                     async {
-                        mainRepository.updateFinance(newFinance!!)
+                        mainRepository.updateBaskets(newBaskets!!)
                     }
                 }
             }

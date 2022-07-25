@@ -1,17 +1,16 @@
 package com.gkonstantakis.finance_app.data
 
-import android.util.Log
 import com.gkonstantakis.finance_app.data.database.FinanceDao
-import com.gkonstantakis.finance_app.data.mapping.FinanceInfoMapper
+import com.gkonstantakis.finance_app.data.mapping.BasketsInfoMapper
 import com.gkonstantakis.finance_app.data.mapping.ProfitInfoMapper
-import com.gkonstantakis.finance_app.data.models.FinanceInfoDomain
+import com.gkonstantakis.finance_app.data.models.BasketsInfoDomain
 import com.gkonstantakis.finance_app.data.models.ProfitInfoDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class MainRepositoryImpl(
     private val financeDao: FinanceDao,
-    private val financeInfoMapper: FinanceInfoMapper,
+    private val basketsInfoMapper: BasketsInfoMapper,
     private val profitInfoMapper: ProfitInfoMapper
 ) : MainRepository {
 
@@ -21,17 +20,15 @@ class MainRepositoryImpl(
             val profit = profitInfoMapper.mapToDomainList(databaseProfit)
             emit(DataState.SuccessGetProfit(profit))
         } catch (e: Exception) {
-            Log.e("MainRepositoryImpl","getProfit: "+e.toString())
         }
     }
 
-    override suspend fun getFinance(): Flow<DataState<List<FinanceInfoDomain>>> = flow {
+    override suspend fun getBaskets(): Flow<DataState<List<BasketsInfoDomain>>> = flow {
         try {
-            val databaseFinance = financeDao.getFinanceInfo()
-            val finance = financeInfoMapper.mapToDomainList(databaseFinance)
-            emit(DataState.SuccessGetFinance(finance))
+            val databaseBaskets = financeDao.getBasketsInfo()
+            val baskets = basketsInfoMapper.mapToDomainList(databaseBaskets)
+            emit(DataState.SuccessGetFinance(baskets))
         } catch (e: Exception) {
-            Log.e("MainRepositoryImpl","getFinance: "+e.toString())
         }
     }
 
@@ -40,16 +37,14 @@ class MainRepositoryImpl(
             val databaseProfit = profitInfoMapper.mapFromDomain(profitInfoDomain)
             financeDao.updateProfit(databaseProfit)
         } catch (e: Exception) {
-            Log.e("MainRepositoryImpl","updateProfit: "+e.toString())
         }
     }
 
-    override suspend fun updateFinance(financeInfoDomain: FinanceInfoDomain) {
+    override suspend fun updateBaskets(basketsInfoDomain: BasketsInfoDomain) {
         try {
-            val databaseFinance = financeInfoMapper.mapFromDomain(financeInfoDomain)
-            financeDao.updateBaskets(databaseFinance)
+            val databaseBaskets = basketsInfoMapper.mapFromDomain(basketsInfoDomain)
+            financeDao.updateBaskets(databaseBaskets)
         } catch (e: Exception) {
-            Log.e("MainRepositoryImpl","updateFinance: "+e.toString())
         }
     }
 }

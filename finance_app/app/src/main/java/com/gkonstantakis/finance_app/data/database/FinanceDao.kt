@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gkonstantakis.finance_app.data.database.entities.FinanceInfo
+import com.gkonstantakis.finance_app.data.database.entities.BasketsInfo
 import com.gkonstantakis.finance_app.data.database.entities.ProfitInfo
 
 @Dao
@@ -17,8 +17,8 @@ interface FinanceDao {
     suspend fun getProfitInfo(): List<ProfitInfo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateBaskets(financeInfo: FinanceInfo): Long
+    suspend fun updateBaskets(financeInfo: BasketsInfo): Long
 
-    @Query("SELECT * FROM finance_info")
-    suspend fun getFinanceInfo(): List<FinanceInfo>
+    @Query("SELECT * FROM baskets_info")
+    suspend fun getBasketsInfo(): List<BasketsInfo>
 }
